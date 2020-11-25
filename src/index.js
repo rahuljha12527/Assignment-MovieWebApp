@@ -1,5 +1,5 @@
 import React from "react";
-import {createStore} from 'redux';
+import {createStore,applyMiddleware} from 'redux';
 import ReactDOM from "react-dom";
 
 import "./index.css";
@@ -8,8 +8,19 @@ import movies from './reducers';
 import rootReducer from './reducers';
 
 
+// function logger(obk,next,action)
+//logger(obj)(next)(action)
+const logger=function({dispatch,getState}){
+  return  function (next){
+    return function (action){
+      //middle
+      console.log('Action type',action.type);
+      next(action);
+    }
+  }
+}
 
-const store=createStore(rootReducer);
+const store=createStore(rootReducer,applyMiddleware(logger));
 console.log('store',store);
 // console.log('STATE',store.getState());
 
